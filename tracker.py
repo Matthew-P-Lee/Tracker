@@ -12,9 +12,7 @@ class Tracker:
 	#returns tracker data for a specific identifier	
 	def GetByUID(self, uid, campaign):
 		
-		conn = boto.connect_dynamodb(
-			aws_access_key_id=self.awsKeyId,
-			aws_secret_access_key=self.awsSecretKey)
+		conn = self.GetConnection()
 						
 		table = conn.get_table(self.tableName)
 		
@@ -29,9 +27,8 @@ class Tracker:
 	def Status(self):
 		msg = 'Tables: '
 		
-		conn = boto.connect_dynamodb(
-			aws_access_key_id=self.awsKeyId,
-			aws_secret_access_key=self.awsSecretKey)
+		#connect to dynamoDb	
+		conn = self.GetConnection()
 				
 		for table in conn.list_tables():
 			msg = conn.describe_table(table)
@@ -49,10 +46,8 @@ class Tracker:
 		}
 
 		#connect to dynamoDb	
-		conn = boto.connect_dynamodb(
-			aws_access_key_id=self.awsKeyId,
-			aws_secret_access_key=self.awsSecretKey)
-			
+		conn = self.GetConnection()
+		
 		#create a table if one doesn't already exist	
 		try:
 			table = conn.get_table('Tracker')
@@ -70,6 +65,13 @@ class Tracker:
 		
 		#retrieve and return the item
 		return self.GetByUID(custId,campaign)
+		
+	def GetConnection(self):
+		conn = boto.connect_dynamodb(
+			aws_access_key_id=self.awsKeyId,
+			aws_secret_access_key=self.awsSecretKey)
+		
+		return conn		
 		
 	#creates a tracking table
 	def CreateTable(self,tablename, conn):

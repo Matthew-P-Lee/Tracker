@@ -25,19 +25,21 @@ class status:
 class track:
 	def GET(self):
 		#?channel='ppc'&campaign='mycampaign'
-		i = web.input(channel = 'undefined channel',campaign = 'undefined campaign')
+		i = web.input(channel = 'undefined channel',
+						campaign = 'undefined campaign')
 		
 		#handy way to get HTTP environment variables
-		referer = web.ctx.env.get('HTTP_REFERER', 'undefined referer')		
+		referer = web.ctx.env.get('HTTP_REFERER', 
+									'undefined referer')		
 		
 		#get the custId from the cookie or create a new one
-		custId = self.HandleCookie(str(uuid.uuid1()))
+		custId = self.SetCustomerCookie(str(uuid.uuid1()))
 		
 		#invoke the tracker
 		return tracker.Track(custId,i.channel,i.campaign,referer)
 	
 	#get/set the master customerId cookie
-	def HandleCookie(self,defaultCookieValue):
+	def SetCustomerCookie(self,defaultCookieValue):
 		cookieName = 'bolCustId'
 		cookieDuration = 3600
 		

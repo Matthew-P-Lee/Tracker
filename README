@@ -1,0 +1,5 @@
+Primitive little script to log clicks for a uniquely identified web visitor
+Uses Amazon DynamoDB for storage and boto for AWS api acces - https://github.com/boto/boto
+
+Also uses web.py for the web services - https://github.com/webpy/webpy
+

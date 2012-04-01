@@ -17,7 +17,7 @@ class getByUID:
 	def GET(self):
 		i = web.input(uid='foo',campaign = 'mycampaign')		
 		return tracker.GetByUID(i.uid,i.campaign)
-
+		
 class status:
 	def GET(self):
 		return tracker.Status()

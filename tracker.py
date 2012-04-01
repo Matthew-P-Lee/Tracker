@@ -34,12 +34,11 @@ class Tracker:
 		return msg		
 			
 	#tracks some data		
-	def Track(self,custId, campaign,channel,referer):
+	def Track(self,custId,channel,campaign,referer):
 		
 		#store it somewhere
 		self.trackedrows = {
 			'Channel':channel, 
-			'Campaign':campaign,
 			'Referer' :referer,
 		}
 
@@ -48,7 +47,7 @@ class Tracker:
 		
 		#create a table if one doesn't already exist	
 		try:
-			table = conn.get_table('Tracker')
+			table = conn.get_table(self.tableName)
 		except:
 			table = self.CreateTable(self.tableName, conn)
 			
@@ -61,7 +60,20 @@ class Tracker:
 		
 		item.put()
 		
-		return item
+		items = table.scan()
+
+		return items
+	
+	def GetCustomersByCampaign(self,id,campaignId):
+		#connect to dynamoDb	
+		conn = self.GetConnection()
+		
+		#create a table if one doesn't already exist	
+		table = conn.get_table(self.tableName)
+		
+		items = table.scan()
+				
+		return items				
 				
 	def GetConnection(self):
 		conn = boto.connect_dynamodb(

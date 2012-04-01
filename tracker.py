@@ -1,5 +1,4 @@
 import boto
-import uuid
 import config
 			
 #campaign and customer tracker code
@@ -11,13 +10,12 @@ class Tracker:
 		
 	#returns tracker data for a specific identifier	
 	def GetByUID(self, uid, campaign):
-		
-		conn = self.GetConnection()
-						
+		#open a connection
+		conn = self.GetConnection()						
 		table = conn.get_table(self.tableName)
 		
 		item = table.get_item(
-			hash_key=str(uid),
+			hash_key=uid,
 			range_key=campaign,
 		)
 		
@@ -63,9 +61,8 @@ class Tracker:
 		
 		item.put()
 		
-		#retrieve and return the item
-		return self.GetByUID(custId,campaign)
-		
+		return item
+				
 	def GetConnection(self):
 		conn = boto.connect_dynamodb(
 			aws_access_key_id=self.awsKeyId,

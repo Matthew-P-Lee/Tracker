@@ -1,6 +1,7 @@
 # simple web tracking and redirection via rest server
 import web
 import tracker
+import uuid
 
 #Mappings for web.py and any other HTTP related stuff
 urls = (
@@ -31,6 +32,7 @@ class track:
 		
 		#get the custId from the cookie or create a new one
 		custId = self.HandleCookie(str(uuid.uuid1()))
+		
 		#invoke the tracker
 		return tracker.Track(custId,i.channel,i.campaign,referer)
 	

@@ -38,8 +38,8 @@ class Tracker:
 		
 		#store it somewhere
 		self.trackedrows = {
-			'Channel':channel, 
-			'Referer' :referer,
+			'Channel':channel,
+				
 		}
 
 		#connect to dynamoDb	
@@ -60,10 +60,8 @@ class Tracker:
 		
 		item.put()
 		
-		items = table.scan()
-
-		return items
-	
+		return item	
+		
 	def GetCustomersByCampaign(self,id,campaignId):
 		#connect to dynamoDb	
 		conn = self.GetConnection()
@@ -81,9 +79,8 @@ class Tracker:
 			aws_secret_access_key=self.awsSecretKey)
 		
 		return conn		
-		
-	#creates a tracking table
-	def CreateTable(self,tablename, conn):
+			
+	def CreateTableTracker(self,tablename, conn):
 		if conn is not None:
 			table_schema = conn.create_schema(
 					hash_key_name='CustomerId',

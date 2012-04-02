@@ -26,6 +26,9 @@ class TestTracker(unittest.TestCase):
 		
 		#for item in items:
 			#print item
+			
+	def test_adder(self):
+		assert(1+1==2)
 		
 		
 if __name__ == '__main__':

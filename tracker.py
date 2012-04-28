@@ -16,7 +16,8 @@ class Tracker:
 	
 	#returns tracker data for a specific identifier	
 	def GetByID(self, id):
-		table = self.conn.get_table(self.tableName)
+		conn = self.GetConnection()
+		table = conn.get_table(self.tableName)
 		
 		item = table.get_item(
 			hash_key=id
@@ -27,14 +28,17 @@ class Tracker:
 	#gets the status of the tracker	
 	def Status(self):
 		msg = ''
+		conn = self.GetConnection()
 				
-		for table in self.conn.list_tables():
-			msg = self.conn.describe_table(table)
+		for table in conn.list_tables():
+			msg = conn.describe_table(table)
 
 		return msg		
 			
 	#tracks some data		
 	def Track(self,customerId,channel,campaign,referer):		
+		conn = self.GetConnection()
+		
 		self.trackedrows = {
 			'CustomerId':customerId,
 			'Channel':channel,
@@ -42,9 +46,8 @@ class Tracker:
 			'Referrer':referer
 		}
 
-		table = self.conn.get_table(self.tableName)
+		table = conn.get_table(self.tableName)
 				
-			
 		#save off the new record	
 		item = table.new_item(
 			hash_key=str(customerId),
@@ -67,23 +70,27 @@ class Tracker:
 		return items
 			
 	def GetConnection(self):
+		conn = None
 		
 		if self.conn is None:
-			self.conn = boto.connect_dynamodb(
+			conn = boto.connect_dynamodb(
 				aws_access_key_id=self.awsKeyId,
 				aws_secret_access_key=self.awsSecretKey)
+		else:
+			conn = self.conn
 		
-		return self.conn		
+		return conn		
 			
 	def CreateTableTracker(self):
-		table_schema = self.conn.create_schema(
+		conn = self.GetConnection()	
+		table_schema = conn.create_schema(
 			hash_key_name='CustomerId',
 			hash_key_proto_value='N',
 			range_key_name='Timestamp',
 			range_key_proto_value='S'
 		)
 		
-		table = self.conn.create_table(
+		table = conn.create_table(
 			name=self.tableName,
 			schema=table_schema,
 			read_units=5,

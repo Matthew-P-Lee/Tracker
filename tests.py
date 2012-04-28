@@ -31,8 +31,6 @@ class TestTracker(unittest.TestCase):
 			
 		for item in items:
 			print item['Timestamp'], item['Referrer']
-			print '-------------------'
-	
 
 if __name__ == '__main__':
 	unittest.main()

@@ -1,31 +1,29 @@
 import boto
 import config
-			
+import uuid
+from datetime import datetime
+		
 #campaign and customer tracker code
 class Tracker:
 	awsKeyId = config.AWS_KEY_ID
 	awsSecretKey = config.AWS_SECRET_KEY
-	tableName = 'Tracker'
+	tableName = config.TRACKER_TABLE_NAME
 	trackedrows = {}
 		
 	#returns tracker data for a specific identifier	
-	def GetByUID(self, uid, campaign):
-		#open a connection
+	def GetByID(self, id):
 		conn = self.GetConnection()						
 		table = conn.get_table(self.tableName)
 		
 		item = table.get_item(
-			hash_key=uid,
-			range_key=campaign,
+			hash_key=id
 		)
 		
 		return item
 		
 	#gets the status of the tracker	
 	def Status(self):
-		msg = 'Tables: '
-		
-		#connect to dynamoDb	
+		msg = ''
 		conn = self.GetConnection()
 				
 		for table in conn.list_tables():
@@ -34,45 +32,40 @@ class Tracker:
 		return msg		
 			
 	#tracks some data		
-	def Track(self,custId,channel,campaign,referer):
+	def Track(self,customerId,channel,campaign,referer):
 		
 		#store it somewhere
 		self.trackedrows = {
+			'CustomerId':customerId,
 			'Channel':channel,
-				
+			'Campaign':campaign,
+			'Referrer':referer
 		}
 
 		#connect to dynamoDb	
 		conn = self.GetConnection()
-		
-		#create a table if one doesn't already exist	
-		try:
-			table = conn.get_table(self.tableName)
-		except:
-			table = self.CreateTable(self.tableName, conn)
+		table = conn.get_table(self.tableName)
+				
 			
 		#save off the new record	
 		item = table.new_item(
-			hash_key=custId,
-			range_key=campaign,
+			hash_key=str(uuid.uuid1()),
+			range_key=str(datetime.now()),
 			attrs=self.trackedrows
 		)
 		
 		item.put()
 		
 		return item	
-		
+			
 	def GetCustomersByCampaign(self,id,campaignId):
-		#connect to dynamoDb	
 		conn = self.GetConnection()
-		
-		#create a table if one doesn't already exist	
 		table = conn.get_table(self.tableName)
-		
 		items = table.scan()
 				
-		return items				
-				
+		for item in items:
+			print item
+			
 	def GetConnection(self):
 		conn = boto.connect_dynamodb(
 			aws_access_key_id=self.awsKeyId,
@@ -80,20 +73,26 @@ class Tracker:
 		
 		return conn		
 			
-	def CreateTableTracker(self,tablename, conn):
-		if conn is not None:
-			table_schema = conn.create_schema(
-					hash_key_name='CustomerId',
-					hash_key_proto_value='S',
-					range_key_name='Campaign',
-					range_key_proto_value='S'
-			)
+	def CreateTableTracker(self):
+		conn = self.GetConnection()
+	
+		table_schema = conn.create_schema(
+			hash_key_name='CustomerId',
+			hash_key_proto_value='N',
+			range_key_name='TimeStamp',
+			range_key_proto_value='S'
+		)
 		
-			table = conn.create_table(
-				name=tablename,
-				schema=table_schema,
-				read_units=10,
-				write_units=10
-			)	
+		table = conn.create_table(
+			name=self.tableName,
+			schema=table_schema,
+			read_units=5,
+			write_units=5
+		)	
 			
 		return table
+		
+	def	DeleteTableTracker(self):
+		conn = self.GetConnection()
+		table = conn.get_table(self.tableName)
+		conn.delete_table(table)

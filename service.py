@@ -15,8 +15,8 @@ tracker = tracker.Tracker()
 
 class getByUID:
 	def GET(self):
-		i = web.input(uid='foo',campaign = 'mycampaign')		
-		return tracker.GetByUID(i.uid,i.campaign)
+		i = web.input(id='foo',campaign = 'mycampaign')		
+		return tracker.GetByID(i.id)
 		
 class status:
 	def GET(self):

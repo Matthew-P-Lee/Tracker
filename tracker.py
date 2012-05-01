@@ -10,10 +10,10 @@ class Tracker:
 	trackedrows = {}
 	conn = None
 	
-	def __init__(self):
-		self.conn = self.GetConnection()						
+#	def __init__(self):
+#		self.conn = self.GetConnection()						
 		
-	#gets the status of the tracker	
+	#Gets the status of the tracker	
 	def Status(self):
 		msg = ''
 		conn = self.GetConnection()
@@ -23,7 +23,7 @@ class Tracker:
 
 		return msg		
 			
-	#tracks some data		
+	#Tracks a click or trackable event
 	def SetEvent(self,customerId,channel,campaign,referer):		
 		conn = self.GetConnection()
 		
@@ -47,6 +47,7 @@ class Tracker:
 		
 		return item	
 	
+	#Sets a customer record if none exists
 	def SetCustomer(self,clientId,customerId):
 		conn = self.GetConnection()
 		item = None
@@ -77,17 +78,6 @@ class Tracker:
 		
 		return item	
 		
-	#returns tracker data for a specific identifier	
-	def GetByID(self, id):
-		conn = self.GetConnection()
-		table = conn.get_table(config.TRACKER_TABLE_NAME)
-		
-		item = table.get_item(
-			hash_key=id
-		)
-		
-		return item
-		
 	def GetCustomers(self,clientId):
 		conn = self.GetConnection()
 		table = conn.get_table(config.CUSTOMER_TABLE_NAME)
@@ -98,6 +88,7 @@ class Tracker:
 			
 		return items
 	
+	#gets all events for a customer
 	def GetEvents(self,id):
 		conn = self.GetConnection()
 		table = conn.get_table(config.TRACKER_TABLE_NAME)
@@ -105,6 +96,10 @@ class Tracker:
 		items = table.query(
 			hash_key=id,
 		)
+			
+		#item = table.get_item(
+		#	hash_key=id
+		#)	
 			
 		return items
 			

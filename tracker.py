@@ -1,9 +1,12 @@
+#!/usr/bin/env python
+
 import boto
 import config
 import uuid
 from datetime import datetime
-		
-#campaign and customer tracker code
+
+
+# Simple click and even tracker using AWS DynamoDB #
 class Tracker:
 	awsKeyId = config.AWS_KEY_ID
 	awsSecretKey = config.AWS_SECRET_KEY
@@ -78,6 +81,7 @@ class Tracker:
 		
 		return item	
 		
+	#gets a list of unique customers for a specific client	
 	def GetCustomers(self,clientId):
 		conn = self.GetConnection()
 		table = conn.get_table(config.CUSTOMER_TABLE_NAME)
@@ -102,7 +106,8 @@ class Tracker:
 		#)	
 			
 		return items
-			
+				
+	#Checks for an active connection and creates it if not 			
 	def GetConnection(self):
 		conn = None
 		
@@ -114,7 +119,8 @@ class Tracker:
 			conn = self.conn
 		
 		return conn		
-			
+		
+	#creates the event tracker table in DynamoDB		
 	def CreateTableTracker(self):
 		conn = self.GetConnection()	
 		
@@ -133,7 +139,8 @@ class Tracker:
 		)	
 			
 		return table
-	
+
+	#creates the customer table in DynamoDB				
 	def CreateTableCustomer(self):
 		conn = self.GetConnection()	
 		
@@ -152,7 +159,8 @@ class Tracker:
 		)	
 			
 		return table
-	
+
+	#deletes a dynamodb table... be careful!	
 	def	DeleteTable(self,tablename):
 		conn = self.GetConnection()			
 		table = conn.get_table(tablename)

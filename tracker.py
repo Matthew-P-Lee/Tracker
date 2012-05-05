@@ -5,7 +5,6 @@ import config
 import uuid
 from datetime import datetime
 
-
 # Simple click and even tracker using AWS DynamoDB #
 class Tracker:
 	awsKeyId = config.AWS_KEY_ID

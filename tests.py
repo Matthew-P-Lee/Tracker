@@ -13,7 +13,7 @@ class TestTracker(unittest.TestCase):
 	def setUpClass(cls):
 		cls.loadTestData()
 
-#	@classmethod
+	@classmethod
 	def tearDownClass(cls):
 		cls.deleteTestData()
 

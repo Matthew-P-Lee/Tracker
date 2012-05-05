@@ -87,6 +87,14 @@ class Tracker:
 		for i in items:
 			i.delete()
 	
+	def DeleteEntries(self,customerId):
+		customers = self.GetCustomers(clientId)
+		
+		for c in customers:
+			items = self.GetEntry(c['customerId'])
+				
+			for i in items:	
+				i.delete()
 	
 	#gets a list of unique customers for a specific client	
 	def GetCustomers(self,clientId):

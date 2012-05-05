@@ -74,6 +74,15 @@ class TestTracker(unittest.TestCase):
 
 	def test_DeleteCustomer(self):
 		track = tracker.Tracker()
+		
+		items = list(track.GetCustomers(1))			
+		items2 = list(track.GetCustomers(3))
+
+		v = items.extend(items2)
+		
+		for i in v:
+			track.DeleteEntries(i['customerId'])
+
 		track.DeleteCustomers(3)
 		track.DeleteCustomers(1)
 		

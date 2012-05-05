@@ -1,0 +1,9 @@
+CREATE EXTERNAL TABLE Customer (ClientId string, CreatedDate string, CustomerId string)
+STORED BY 'org.apache.hadoop.hive.dynamodb.DynamoDBStorageHandler' 
+TBLPROPERTIES ("dynamodb.table.name" = "Customer", 
+"dynamodb.column.mapping" = "ClientId:ClientId,CreatedDate:CreatedDate,CustomerId:CustomerId"); 
+
+CREATE EXTERNAL TABLE Tracker (CustomerId string, CreatedDate string, Referrer string, Campaign string, Channel string)
+STORED BY 'org.apache.hadoop.hive.dynamodb.DynamoDBStorageHandler' 
+TBLPROPERTIES ("dynamodb.table.name" = "Tracker", 
+"dynamodb.column.mapping" = "CustomerId:CustomerId,CreatedDate:CreatedDate,Referrer:Referrer,Campaign:Campaign,Channel:Channel"); 

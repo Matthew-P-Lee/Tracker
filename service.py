@@ -2,6 +2,7 @@
 import web
 import tracker
 import uuid
+import config
 
 #Mappings for web.py and any other HTTP related stuff
 urls = (
@@ -15,7 +16,7 @@ tracker = tracker.Tracker()
 
 class getByUID:
 	def GET(self):
-		i = web.input(id='foo',campaign = 'mycampaign')		
+		i = web.input(id=config.TEST_UID)		
 		return tracker.GetByID(i.id)
 		
 class status:

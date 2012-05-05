@@ -14,26 +14,16 @@ class Tracker:
 	
 #	def __init__(self):
 #		self.conn = self.GetConnection()						
-		
-	#Gets the status of the tracker	
-	def Status(self):
-		msg = ''
-		conn = self.GetConnection()
 				
-		for table in conn.list_tables():
-			msg = conn.describe_table(table)
-
-		return msg		
-			
 	#Tracks a click or trackable event
-	def SetEvent(self,customerId,channel,campaign,referer):		
+	def SetEvent(self,customerId,channel,campaign,referrer):		
 		conn = self.GetConnection()
 		
 		self.trackedrows = {
 			'CustomerId':customerId,
 			'Channel':channel,
 			'Campaign':campaign,
-			'Referrer':referer
+			'Referrer':referrer
 		}
 
 		table = conn.get_table(config.TRACKER_TABLE_NAME)
@@ -138,7 +128,7 @@ class Tracker:
 		table_schema = conn.create_schema(
 			hash_key_name='CustomerId',
 			hash_key_proto_value='S',
-			range_key_name='Timestamp',
+			range_key_name='CreatedDate',
 			range_key_proto_value='S'
 		)
 		
@@ -157,8 +147,8 @@ class Tracker:
 		
 		table_schema = conn.create_schema(
 			hash_key_name='ClientId',
-			hash_key_proto_value='N',
-			range_key_name='Timestamp',
+			hash_key_proto_value='S',
+			range_key_name='CreatedDate',
 			range_key_proto_value='S'
 		)
 		
@@ -176,5 +166,3 @@ class Tracker:
 		conn = self.GetConnection()			
 		table = conn.get_table(tablename)
 		conn.delete_table(table)
-		
-	

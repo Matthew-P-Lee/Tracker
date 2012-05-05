@@ -65,7 +65,7 @@ class Tracker:
 				match = 1
 				item = i
 		
-		if match:
+		if not match:
 			table = conn.get_table(config.CUSTOMER_TABLE_NAME)
 		
 			#save off the new record	
@@ -81,6 +81,13 @@ class Tracker:
 		
 		return item	
 		
+	def DeleteCustomers(self,clientId):
+		items = self.GetCustomers(clientId)
+		
+		for i in items:
+			i.delete()
+	
+	
 	#gets a list of unique customers for a specific client	
 	def GetCustomers(self,clientId):
 		conn = self.GetConnection()

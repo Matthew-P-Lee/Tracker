@@ -7,35 +7,20 @@ import config
 from datetime import datetime
 import pdb
 
-class TestTracker(unittest.TestCase):
+class TestTracker(unittest.TestCase):	
 	
-	def test_GetConnection(self):
+	@classmethod
+	def setUpClass(cls):
+		cls.loadTestData()
+
+#	@classmethod
+	def tearDownClass(cls):
+		cls.deleteTestData()
+
+	@classmethod	
+	def loadTestData(cls):
 		track = tracker.Tracker()
-		track.GetConnection()
-	
-	def test_GetStatus(self):
-		track = tracker.Tracker()
-		track.Status()
-	
-	def test_SetEvent(self):	
-		myID = config.TEST_UID
 		myCampaign = str(datetime.now())
-		track = tracker.Tracker()
-		track.SetEvent(myID,'search',myCampaign,'google')
-		track.SetEvent(myID,'email',myCampaign,'exacttarget')
-		track.SetEvent(myID,'ppc',myCampaign,'bing')
-		track.SetEvent(myID,'social',myCampaign,'facebook')
-	
-	def test_GetEvents(self):
-		myID = config.TEST_UID
-		track = tracker.Tracker()
-		items = track.GetEvents(myID)	
-			
-		#for item in items:
-		#	print item['Timestamp'], item['Referrer']
-			
-	def test_GetSetCustomer(self):
-		track = tracker.Tracker()
 		
 		#set 2 different UID for the same client
 		track.SetCustomer(1,config.TEST_UID)
@@ -46,46 +31,71 @@ class TestTracker(unittest.TestCase):
 		track.SetCustomer(3,config.TEST_UID)
 		track.SetCustomer(3,config.TEST_UID)
 		track.SetCustomer(3,config.TEST_UID)
+			
+		#only load events if none
+		items = track.GetEvents(config.TEST_UID)
+		
+		if len(list(items)) == 0:		
+			print 'Loading test Events...'
+			track.SetEvent(config.TEST_UID,'search',myCampaign,'google')
+			track.SetEvent(config.TEST_UID,'email',myCampaign,'exacttarget')
+			track.SetEvent(config.TEST_UID,'ppc',myCampaign,'bing')
+			track.SetEvent(config.TEST_UID,'social',myCampaign,'facebook')		 		
+			track.SetEvent(config.TEST_UID2,'search',myCampaign,'google')
+			track.SetEvent(config.TEST_UID2,'email',myCampaign,'exacttarget')
+			track.SetEvent(config.TEST_UID2,'ppc',myCampaign,'bing')
+			track.SetEvent(config.TEST_UID2,'social',myCampaign,'facebook')		 
+
+	@classmethod
+	def deleteTestData(cls):
+		print 'Deleting test database...'
+		track = tracker.Tracker()
+		items = list(track.GetCustomers(1))			
+		
+		for i in items:
+			track.DeleteEvent(i['CustomerId'])
+
+		track.DeleteCustomers(1)
+		track.DeleteCustomers(3)
+		
+	def test_GetConnection(self):
+		track = tracker.Tracker()
+		track.GetConnection()
 	
+	def test_GetStatus(self):
+		track = tracker.Tracker()
+		track.Status()
+		
+	def test_GetEvents(self):
+		myID = config.TEST_UID
+		track = tracker.Tracker()
+		items = track.GetEvents(myID)	
+			
+		#for item in items:
+		#	print item['CustomerId'],item['Timestamp'], item['Referrer']
+			
+	def test_GetCustomer(self):
+		track = tracker.Tracker()
 		i = track.GetCustomers(1)	
 		v = track.GetCustomers(3)	
 
 		assert(len(list(i)) == 2)
 		assert(len(list(v)) == 1)
 
-		#for i in items:
-		#	print i['ClientId'],i['CustomerId']
+		#for e in i:
+		#	print e['ClientId'],e['CustomerId']
 				
 	def test_GetEntriesByClient(self):
 		track = tracker.Tracker()
-		items = track.GetCustomers(1)			
-		
+		items = track.GetCustomers(3)			
+				
 		for i in items:
-			items = track.GetEvents(i['CustomerId'])	
-
-			assert(len(items) > 0)
-		
-		
-		#for i in items:
-		#	items = track.GetEvents(i['CustomerId'])	
-			
+			items2 = track.GetEvents(i['CustomerId'])		
+			assert(len(list(items2)) >= 4)		
+					
 		#	for item in items:
 		#		print item['Timestamp'], item['Referrer']
-
-	def test_DeleteCustomer(self):
-		track = tracker.Tracker()
-		
-		items = list(track.GetCustomers(1))			
-		items2 = list(track.GetCustomers(3))
-
-		v = items.extend(items2)
-		
-		for i in v:
-			track.DeleteEntries(i['customerId'])
-
-		track.DeleteCustomers(3)
-		track.DeleteCustomers(1)
-		
-			
+					
 if __name__ == '__main__':
 	unittest.main()
+	

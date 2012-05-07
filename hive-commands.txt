@@ -7,3 +7,11 @@ CREATE EXTERNAL TABLE Tracker (CustomerId string, CreatedDate string, Referrer s
 STORED BY 'org.apache.hadoop.hive.dynamodb.DynamoDBStorageHandler' 
 TBLPROPERTIES ("dynamodb.table.name" = "Tracker", 
 "dynamodb.column.mapping" = "CustomerId:CustomerId,CreatedDate:CreatedDate,Referrer:Referrer,Campaign:Campaign,Channel:Channel"); 
+
+CREATE EXTERNAL TABLE Tracker_s3_export ( Customer string, CustomerId string)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+LOCATION 's3://vistaseeker.com/export' ;
+
+INSERT OVERWRITE TABLE Tracker_s3_export
+ SELECT c.ClientId,t.CustomerId from Customer c JOIN Tracker t on t.CustomerId = c.CustomerId;

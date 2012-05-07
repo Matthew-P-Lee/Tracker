@@ -11,7 +11,7 @@ class TestTracker(unittest.TestCase):
 	
 	@classmethod
 	def setUpClass(cls):
-		cls.deleteTestData()
+#		cls.deleteTestData()
 		cls.loadTestData()
 
 #	@classmethod

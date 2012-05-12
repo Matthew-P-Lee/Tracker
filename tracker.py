@@ -5,7 +5,7 @@ import config
 import uuid
 from datetime import datetime
 
-# Simple click and even tracker using AWS DynamoDB #
+# Simple click and evenT tracker using AWS DynamoDB #
 class Tracker:
 	awsKeyId = config.AWS_KEY_ID
 	awsSecretKey = config.AWS_SECRET_KEY
@@ -16,14 +16,15 @@ class Tracker:
 #		self.conn = self.GetConnection()						
 				
 	#Tracks a click or trackable event
-	def SetEvent(self,customerId,channel,campaign,referrer):		
+	def SetEvent(self,customerId,channel,campaign,referrer,url):		
 		conn = self.GetConnection()
 		
 		self.trackedrows = {
 			'CustomerId':customerId,
 			'Channel':channel,
 			'Campaign':campaign,
-			'Referrer':referrer
+			'Referrer':referrer,
+			'URL':url
 		}
 
 		table = conn.get_table(config.TRACKER_TABLE_NAME)
@@ -35,7 +36,10 @@ class Tracker:
 			attrs=self.trackedrows
 		)
 		
-		item.put()
+		try:
+			item.put()
+		except DynamoDBResponseError:
+			print 'Could not conect to dynamodb'
 		
 		return item	
 	

@@ -38,14 +38,15 @@ class TestTracker(unittest.TestCase):
 		
 		#create 4 test events for each UID
 		if len(list(items)) == 0:		
-			track.SetEvent(config.TEST_UID,'search',myCampaign,'google')
-			track.SetEvent(config.TEST_UID,'email',myCampaign,'exacttarget')
-			track.SetEvent(config.TEST_UID,'ppc',myCampaign,'bing')
-			track.SetEvent(config.TEST_UID,'social',myCampaign,'facebook')		 		
-			track.SetEvent(config.TEST_UID2,'search',myCampaign,'google')
-			track.SetEvent(config.TEST_UID2,'email',myCampaign,'exacttarget')
-			track.SetEvent(config.TEST_UID2,'ppc',myCampaign,'bing')
-			track.SetEvent(config.TEST_UID2,'social',myCampaign,'facebook')		 
+			track.SetEvent(
+				config.TEST_UID,'search',myCampaign,'google',config.TEST_URL)
+			track.SetEvent(config.TEST_UID,'email',myCampaign,'exacttarget',config.TEST_URL)
+			track.SetEvent(config.TEST_UID,'ppc',myCampaign,'bing',config.TEST_URL)
+			track.SetEvent(config.TEST_UID,'social',myCampaign,'facebook',config.TEST_URL)		 		
+			track.SetEvent(config.TEST_UID2,'search',myCampaign,'google',config.TEST_URL)
+			track.SetEvent(config.TEST_UID2,'email',myCampaign,'exacttarget',config.TEST_URL)
+			track.SetEvent(config.TEST_UID2,'ppc',myCampaign,'bing',config.TEST_URL)
+			track.SetEvent(config.TEST_UID2,'social',myCampaign,'facebook',config.TEST_URL)		 
 
 	@classmethod
 	def deleteTestData(cls):

@@ -12,16 +12,16 @@ def Run():
 	if (len(sys.argv) > 1):
 		if( sys.argv[1] == '-d' ):
 			print "Deleting Tables..."
-			t.DeleteTable('Tracker')
-			t.DeleteTable('Customer')
+			t.delete_table('Tracker')
+			t.delete_table('Customer')
 		elif( sys.argv[1] == '-c' ):
 			print "Creating Tables..."
-			t.CreateTableTracker()	
-			t.CreateTableCustomer()
+			t.get_connection()	
+			t.create_table_customer()
 		elif( sys.argv[1] == '-deleteCustomer' ):
-			t.DeleteTable('Customer')
+			t.delete_table('Customer')
 		elif( sys.argv[1] == '-deleteTracker' ):
-			t.DeleteTable('Tracker')
+			t.delete_table('Tracker')
 		else:
 			PrintHelpMsg()
 	else:

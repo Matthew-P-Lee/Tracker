@@ -34,13 +34,13 @@ class track:
 									'undefined referer')		
 		
 		#get the custId from the cookie or create a new one
-		custId = self.SetCustomerCookie(str(uuid.uuid1()))
+		custId = self.set_customerCookie(str(uuid.uuid1()))
 		
 		#invoke the tracker
 		return tracker.Track(custId,i.channel,i.campaign,referer)
 	
 	#get/set the master customerId cookie
-	def SetCustomerCookie(self,defaultCookieValue):
+	def set_customerCookie(self,defaultCookieValue):
 		cookieName = 'bolCustId'
 		cookieDuration = 3600
 		

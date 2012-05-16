@@ -12,7 +12,7 @@ class TestTracker(unittest.TestCase):
 	
 	@classmethod
 	def setUpClass(cls):
-		cls.deleteTestData()
+		#cls.deleteTestData()
 		cls.loadTestData()
 
 #	@classmethod
@@ -63,7 +63,7 @@ class TestTracker(unittest.TestCase):
 		items = list(track.get_customers(1))			
 		
 		for i in items:
-			track.delete_click(i['CustomerId'])
+			track.delete_click(i['customerID'])
 
 		track.delete_customer(1)
 		track.delete_customer(3)
@@ -84,14 +84,14 @@ class TestTracker(unittest.TestCase):
 		assert(len(list(c2)) == 1)
 		
 		for cust in c1:
-			print cust['ClientId'],cust['CustomerId']
+			print cust['clientID'],cust['customerID']
 		
 	def test_GetItems(self):
 		track = tracker.Tracker()
 		items = track.get_customers(3)			
 				
 		for i in items:
-			items2 = track.get_clicks(i['CustomerId'])		
+			items2 = track.get_clicks(i['customerID'])		
 			assert(len(list(items2)) == 4)
 		
 			

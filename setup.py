@@ -16,8 +16,8 @@ def Run():
 			t.delete_table('Customer')
 		elif( sys.argv[1] == '-c' ):
 			print "Creating Tables..."
-			t.get_connection()	
 			t.create_table_customer()
+			t.create_table_tracker()
 		elif( sys.argv[1] == '-deleteCustomer' ):
 			t.delete_table('Customer')
 		elif( sys.argv[1] == '-deleteTracker' ):

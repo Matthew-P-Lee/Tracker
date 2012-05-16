@@ -3,7 +3,7 @@
 import tracker
 import sys
 
-def PrintHelpMsg():
+def get_help_msg():
 	print 'Args: -d to delete, -c to create'
 
 def Run():
@@ -23,9 +23,9 @@ def Run():
 		elif( sys.argv[1] == '-deleteTracker' ):
 			t.delete_table('Tracker')
 		else:
-			PrintHelpMsg()
+			get_help_msg()
 	else:
-		PrintHelpMsg()
+		get_help_msg()
 
 
 if __name__ == '__main__':

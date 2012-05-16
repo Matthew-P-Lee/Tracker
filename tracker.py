@@ -3,7 +3,9 @@
 import boto
 import config
 import uuid
+import time
 from datetime import datetime
+from boto.dynamodb.condition import *
 
 # Simple click and evenT tracker using AWS DynamoDB #
 class Tracker:
@@ -14,16 +16,17 @@ class Tracker:
 	
 #	def __init__(self):
 #		self.conn = self.GetConnection()						
-				
+		
+	def ConvertPythonTimeToUnixTime(self, pythondatetime):
+		return time.mktime(pythondatetime.timetuple())
+		
 	#Tracks a click or trackable event
-	def SetEvent(self,customerId,channel,campaign,referrer,url):		
+	def SetEvent(self,customerId,campaign,url):		
 		conn = self.GetConnection()
 		
 		self.trackedrows = {
 			'CustomerId':customerId,
-			'Channel':channel,
-			'Campaign':campaign,
-			'Referrer':referrer,
+			'CampaignCode':campaign,
 			'URL':url
 		}
 
@@ -32,14 +35,11 @@ class Tracker:
 		#save off the new record	
 		item = table.new_item(
 			hash_key=str(customerId),
-			range_key=str(datetime.now()),
+			range_key=str(self.ConvertPythonTimeToUnixTime(datetime.now())),
 			attrs=self.trackedrows
 		)
 		
-		try:
-			item.put()
-		except DynamoDBResponseError:
-			print 'Could not conect to dynamodb'
+		item.put()
 		
 		return item	
 	
@@ -64,13 +64,13 @@ class Tracker:
 			#save off the new record	
 			item = table.new_item(
 				hash_key=str(clientId),
-				range_key=str(datetime.now()),
+				range_key=str(self.ConvertPythonTimeToUnixTime(datetime.now())),
 				attrs={
 					'CustomerId':customerId
 				}
 			)
 		
-			item.put()
+			print item.put()
 		
 		return item	
 		
@@ -101,17 +101,20 @@ class Tracker:
 	def GetEvents(self,id):
 		conn = self.GetConnection()
 		table = conn.get_table(config.TRACKER_TABLE_NAME)
-		
+			
 		items = table.query(
 			hash_key=id,
+			range_key_condition=LT(
+					str(self.ConvertPythonTimeToUnixTime(datetime.now()))
+				)
 		)
 			
 		#item = table.get_item(
 		#	hash_key=id
 		#)	
 			
-		return items
-				
+		return items	
+			
 	#Checks for an active connection and creates it if not 			
 	def GetConnection(self):
 		conn = None

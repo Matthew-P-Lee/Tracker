@@ -1,0 +1,16 @@
+$def with (content)
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+    <head>
+        <title>PAGE TITLE</title>
+        <!-- Some CSS and some javascript -->
+    </head>
+    <body>
+        $:content
+
+		<li><a href='track?c=campaign_1'>Click Me To Track Campaign 1</a>
+		<li><a href='track?c=campaign_2'>Click Me To Track Campaign 2</a>
+		<li><a href='track?c=campaign_3'>Click Me To Track Campaign 3</a>
+
+    </body>
+</html>

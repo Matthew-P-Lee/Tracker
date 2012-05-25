@@ -43,21 +43,29 @@ class TestTracker(unittest.TestCase):
 		
 		#create 4 test events for each UID
 		if len(list(items)) == 0:		
-			print track.set_click(config.TEST_UID,'1',config.TEST_URL)
+			print track.set_click(
+				config.TEST_UID,'1','1',config.TEST_URL)
 			time.sleep(1)
-			print track.set_click(config.TEST_UID,'2',config.TEST_URL)
+			print track.set_click(
+				config.TEST_UID,'2','1',config.TEST_URL)
 			time.sleep(1)
-			print track.set_click(config.TEST_UID,'3',config.TEST_URL)
+			print track.set_click(
+				config.TEST_UID,'3','1',config.TEST_URL)
 			time.sleep(1)
-			print track.set_click(config.TEST_UID,'4',config.TEST_URL)		 		
+			print track.set_click(
+				config.TEST_UID,'4','1',config.TEST_URL)		 		
 			time.sleep(1)
-			print track.set_click(config.TEST_UID2,'5',config.TEST_URL)
+			print track.set_click(
+				config.TEST_UID2,'5','1',config.TEST_URL)
 			time.sleep(1)
-			print track.set_click(config.TEST_UID2,'6',config.TEST_URL)
+			print track.set_click(
+				config.TEST_UID2,'6','1',config.TEST_URL)
 			time.sleep(1)
-			print track.set_click(config.TEST_UID2,'7',config.TEST_URL)
+			print track.set_click
+				(config.TEST_UID2,'7','1',config.TEST_URL)
 			time.sleep(1)
-			print track.set_click(config.TEST_UID2,'8',config.TEST_URL)		 
+			print track.set_click							(
+				config.TEST_UID2,'8','1',config.TEST_URL)		 
 
 	@classmethod
 	def deleteTestData(cls):

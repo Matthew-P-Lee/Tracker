@@ -22,12 +22,14 @@ class Tracker:
 		return time.mktime(pydatetime.timetuple())
 		
 	#Tracks a click or trackable event
-	def set_click(self,customer_id,campaign,url):		
+	def set_click(self,customer_id,campaign_id,client_id, url):		
 		conn = self.get_connection()
+
+		self.set_customer(client_id,customer_id)
 		
 		self.trackedrows = {
 			'customer_id':customer_id,
-			'campaign_id':campaign,
+			'campaign_id':campaign_id,
 			'URL':url
 		}
 

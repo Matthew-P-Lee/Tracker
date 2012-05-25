@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python
 
 import tracker
 import sys
@@ -14,14 +14,18 @@ def Run():
 			print "Deleting Tables..."
 			t.delete_table('Tracker')
 			t.delete_table('Customer')
+			t.delete_table('Campaign')		
 		elif( sys.argv[1] == '-c' ):
 			print "Creating Tables..."
-			t.create_table_customer()
-			t.create_table_tracker()
+			t.create_table('Tracker','customer_id')
+			t.create_table('Customer','client_id')
+			t.create_table('Campaign','campaign_id')		
 		elif( sys.argv[1] == '-deleteCustomer' ):
 			t.delete_table('Customer')
 		elif( sys.argv[1] == '-deleteTracker' ):
 			t.delete_table('Tracker')
+		elif( sys.argv[1] == '-deleteCampaign' ):
+			t.delete_table('Campaign')
 		else:
 			get_help_msg()
 	else:

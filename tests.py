@@ -12,12 +12,14 @@ class TestTracker(unittest.TestCase):
 	
 	@classmethod
 	def setUpClass(cls):
-		#cls.deleteTestData()
+		print 'setting up test data'
 		cls.loadTestData()
 
-#	@classmethod
-#	def tearDownClass(cls):
+	@classmethod
+	def tearDownClass(cls):
+		print 'tearing down test data'
 #		cls.deleteTestData()
+		
 
 	@classmethod	
 	def loadTestData(cls):
@@ -63,10 +65,10 @@ class TestTracker(unittest.TestCase):
 		items = list(track.get_customers(1))			
 		
 		for i in items:
-			track.delete_click(i['customerID'])
+			track.delete_clicks(i['customer_id'])
 
-		track.delete_customer(1)
-		track.delete_customer(3)
+		track.delete_customers(1)
+		track.delete_customers(3)
 		
 	def test_get_clicks(self):
 		track = tracker.Tracker()
@@ -84,14 +86,14 @@ class TestTracker(unittest.TestCase):
 		assert(len(list(c2)) == 1)
 		
 		for cust in c1:
-			print cust['clientID'],cust['customerID']
+			print cust['client_id'],cust['client_id']
 		
 	def test_GetItems(self):
 		track = tracker.Tracker()
 		items = track.get_customers(3)			
 				
 		for i in items:
-			items2 = track.get_clicks(i['customerID'])		
+			items2 = track.get_clicks(i['customer_id'])		
 			assert(len(list(items2)) == 4)
 		
 			

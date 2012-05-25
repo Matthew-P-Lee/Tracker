@@ -22,12 +22,12 @@ class Tracker:
 		return time.mktime(pydatetime.timetuple())
 		
 	#Tracks a click or trackable event
-	def set_click(self,customerID,campaign,url):		
+	def set_click(self,customer_id,campaign,url):		
 		conn = self.get_connection()
 		
 		self.trackedrows = {
-			'customerID':customerID,
-			'campaignID':campaign,
+			'customer_id':customer_id,
+			'campaign_id':campaign,
 			'URL':url
 		}
 
@@ -35,8 +35,8 @@ class Tracker:
 		
 		#save off the new record	
 		item = table.new_item(
-			hash_key=str(customerID),
-			range_key=str(self.pytime_to_timestamp(datetime.now())),
+			hash_key=str(customer_id),
+			range_key=self.pytime_to_timestamp(datetime.now()),
 			attrs=self.trackedrows
 		)
 		
@@ -45,7 +45,7 @@ class Tracker:
 		return item	
 	
 	#Sets a customer record if none exists
-	def set_customer(self,clientId,customerID):
+	def set_customer(self,clientId,customer_id):
 		conn = self.get_connection()
 		item = None
 		
@@ -55,7 +55,7 @@ class Tracker:
 		match = 0
 		
 		for i in items:
-			if str(i['customerID']) == str(customerID): 
+			if str(i['customer_id']) == str(customer_id): 
 				match = 1
 				item = i
 		
@@ -65,9 +65,9 @@ class Tracker:
 			#save off the new record	
 			item = table.new_item(
 				hash_key=str(clientId),
-				range_key=str(self.pytime_to_timestamp(datetime.now())),
+				range_key=self.pytime_to_timestamp(datetime.now()),
 				attrs={
-					'customerID':customerID
+					'customer_id':customer_id
 				}
 			)
 		
@@ -75,14 +75,14 @@ class Tracker:
 		
 		return item	
 		
-	def delete_customer(self,clientId):
+	def delete_customers(self,clientId):
 		items = self.get_customers(clientId)
 		
 		for i in items:
 			i.delete()
 	
-	def delete_click(self,customerID):
-		events = self.get_clicks(customerID)
+	def delete_clicks(self,customer_id):
+		events = self.get_clicks(customer_id)
 		
 		for e in events:
 			e.delete()
@@ -105,11 +105,11 @@ class Tracker:
 			
 		items = table.query(
 			hash_key=id,
-			range_key_condition=LT(
-					str(self.pytime_to_timestamp(datetime.now()))
-				)
+			range_key_condition=BETWEEN(
+				self.pytime_to_timestamp(datetime.min),
+				self.pytime_to_timestamp(datetime.max)
+			)
 		)
-			
 		#item = table.get_item(
 		#	hash_key=id
 		#)	
@@ -128,66 +128,28 @@ class Tracker:
 			conn = self.conn
 		
 		return conn		
+	
 		
-	#creates event tracker table in DynamoDB		
-	def create_table_tracker(self):
-		conn = self.get_connection()	
-		
-		table_schema = conn.create_schema(
-			hash_key_name='customerID',
-			hash_key_proto_value='S',
-			range_key_name='created_date',
-			range_key_proto_value='S'
-		)
-		
-		table = conn.create_table(
-			name=config.TRACKER_TABLE_NAME,
-			schema=table_schema,
-			read_units=5,
-			write_units=5
-		)	
-			
-		return table
-
 	#creates the customer table in DynamoDB				
-	def create_table_customer(self):
+	def create_table(self,table_name,hash_key_name):
 		conn = self.get_connection()	
-		
+		table = None
+	
 		table_schema = conn.create_schema(
-			hash_key_name='client_id', 
-			hash_key_proto_value='S',
-			range_key_name='created_date',
-			range_key_proto_value='S'
+			hash_key_name, 
+			str,
+			'created_date',
+			float
 		)
-		
+
 		table = conn.create_table(
-			name=config.CUSTOMER_TABLE_NAME,
+			name=table_name,
 			schema=table_schema,
 			read_units=5,
 			write_units=5
-		)	
-			
+		)
+
 		return table
-		
-		#creates the customer table in DynamoDB				
-	def create_table_campaign(self):
-		conn = self.get_connection()	
-		
-		table_schema = conn.create_schema(
-			hash_key_name='campaign_id', 
-			hash_key_proto_value='S',
-			range_key_name='created_date',
-			range_key_proto_value='S'
-		)
-		
-		table = conn.create_table(
-			name=config.CAMPAIGN_TABLE_NAME,
-			schema=table_schema,
-			read_units=5,
-			write_units=5
-		)	
-			
-		return table	
 
 	#deletes a dynamodb table... be careful!	
 	def	delete_table(self,tablename):

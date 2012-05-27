@@ -1,12 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
     <head>
-	<script type="text/javascript" src="http://localhost/~matthew/jquery-ui/jquery-1.7.1.js"></script>          
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>          
 	<script type="text/javascript">
 		 jQuery(document).ready(function() {
    			jQuery(".trackedlink").click(function() {
 				jQuery.ajax({
-  					url: 'http://127.0.0.1:8000/track?campaign=campaign_1',
+  					url: 'track?campaign=campaign_1',
   					success: function(data) {
     					jQuery("#results").html(data);
   					}

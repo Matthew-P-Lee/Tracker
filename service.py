@@ -6,7 +6,7 @@ import config
 
 #Mappings for web.py and any other HTTP related stuff
 urls = (
-	'/', 'track',
+	'/', 'status',
 	'/track', 'track',
 	'/getbyuid', 'getByUID',
 	)

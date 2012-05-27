@@ -3,16 +3,17 @@
     <head>
 	<script type="text/javascript" src="http://localhost/~matthew/jquery-ui/jquery-1.7.1.js"></script>          
 	<script type="text/javascript">
-		 $(document).ready(function() {
-   			$("#click_1").click(function() {
-				$.ajax({
+		 jQuery(document).ready(function() {
+   			jQuery(".trackedlink").click(function() {
+				jQuery.ajax({
   					url: 'http://127.0.0.1:8000/track?campaign=campaign_1',
   					success: function(data) {
-    					$('.result').html(data);
-    					alert('Load was performed.');
+    					jQuery("#results").html(data);
   					}
 				});
-   			});
+
+				return false;   			
+			});
  		});
 
 	</script>
@@ -20,8 +21,7 @@
         <!-- Some CSS and some javascript -->
     </head>
     <body>
-       
-		<li><a id="click_1" href='#'>Click Me To Track Campaign 1</a>
+  		<li><a class="trackedlink" href='track?campaign=campaign_1'>Click Me To Track Campaign 1</a>
 		<li><a href='track?campaign=campaign_2'>Click Me To Track Campaign 2</a>
 		<li><a href='track?campaign=campaign_3'>Click Me To Track Campaign 3</a>
 

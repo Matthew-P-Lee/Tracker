@@ -4,29 +4,45 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>          
 	<script type="text/javascript">
 		 jQuery(document).ready(function() {
-   			jQuery(".trackedlink").click(function() {
+   			
+			jQuery.ajax({
+  				url: "history",
+  				success: function(data) {
+    				jQuery("#history").append("<li>"+data);
+  				}
+			});
+			
+			
+			jQuery(".trackedlink").click(function() {
 				jQuery.ajax({
-  					url: 'track?campaign=campaign_1',
+  					url: jQuery(".trackedlink").attr("href"),
   					success: function(data) {
-    					jQuery("#results").html(data);
+    					jQuery("#results").append("<li>"+data);
   					}
 				});
 
 				return false;   			
 			});
- 		});
+ 		
+		});
 
 	</script>
         <title>PAGE TITLE</title>
         <!-- Some CSS and some javascript -->
     </head>
     <body>
-  		<li><a class="trackedlink" href='track?campaign=campaign_1'>Click Me To Track Campaign 1</a>
-		<li><a href='track?campaign=campaign_2'>Click Me To Track Campaign 2</a>
-		<li><a href='track?campaign=campaign_3'>Click Me To Track Campaign 3</a>
+  		<ul>
+		<li><a class="trackedlink" href='track?campaign=campaign_1'>Click Me To Track Campaign 1</a>
+		<li><a class="trackedlink" href='track?campaign=campaign_2'>Click Me To Track Campaign 2</a>
+		<li><a class="trackedlink" href='track?campaign=campaign_3'>Click Me To Track Campaign 3</a>
+		</ul>
+		
+		<ul id="results">
+		</ul>
 
-	<div id="results"></div>
-
+		<ul id="history">
+		</ul>
+		
 
     </body>
 </html>

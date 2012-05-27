@@ -8,16 +8,20 @@ import config
 urls = (
 	'/', 'status',
 	'/track', 'track',
-	'/getbyuid', 'getByUID',
+	'/history', 'GetByCustomerID',
 	)
 
 app = web.application(urls, globals())
 tracker = tracker.Tracker()
 
-class getByUID:
+class GetByCustomerID:
 	def GET(self):
-		i = web.input(id=config.TEST_UID)		
-		return tracker.GetByID(i.id)
+		#get the custId from the cookie or create a new one
+		cookieName = 'customer_id'
+		
+		#see if the user has a custId set in a cookie already, 
+		cookie = web.cookies().get(cookieName)					
+		return tracker.get_clicks(str(cookie))
 		
 class status:
 	def GET(self):

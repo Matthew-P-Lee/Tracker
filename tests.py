@@ -13,6 +13,7 @@ class TestTracker(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
 		print 'setting up test data'
+		cls.deleteTestData()
 		cls.loadTestData()
 
 	@classmethod

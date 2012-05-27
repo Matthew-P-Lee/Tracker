@@ -19,7 +19,8 @@ class Tracker:
 		
 	#converts a python datetime to a unix timestamp	
 	def pytime_to_timestamp(self, pydatetime):
-		return time.mktime(pydatetime.timetuple())
+		#return time.mktime(pydatetime.timetuple())
+		return int(time.time())
 		
 	#Tracks a click or trackable event
 	def set_click(self,customer_id,campaign_id,client_id, url):		
@@ -107,9 +108,8 @@ class Tracker:
 			
 		items = table.query(
 			hash_key=id,
-			range_key_condition=BETWEEN(
-				self.pytime_to_timestamp(datetime.min),
-				self.pytime_to_timestamp(datetime.max)
+			range_key_condition=LT(
+				self.pytime_to_timestamp(datetime.now())
 			)
 		)
 		#item = table.get_item(

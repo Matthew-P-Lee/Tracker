@@ -6,7 +6,7 @@ import config
 
 #Mappings for web.py and any other HTTP related stuff
 urls = (
-	'/', 'status',
+	'/', 'track',
 	'/track', 'track',
 	'/getbyuid', 'getByUID',
 	)
@@ -22,7 +22,7 @@ class getByUID:
 class status:
 	def GET(self):
 		render = web.template.render('templates')
-		return render.default('Welcome to the Tracker Demo')
+		return render.index()
 
 class track:
 	def GET(self):

@@ -61,10 +61,10 @@ class TestTracker(unittest.TestCase):
 			print track.set_click(
 				config.TEST_UID2,'6','1',config.TEST_URL)
 			time.sleep(1)
-			print track.set_click
-				(config.TEST_UID2,'7','1',config.TEST_URL)
+			print track.set_click(
+				config.TEST_UID2,'7','1',config.TEST_URL)
 			time.sleep(1)
-			print track.set_click							(
+			print track.set_click(
 				config.TEST_UID2,'8','1',config.TEST_URL)		 
 
 	@classmethod

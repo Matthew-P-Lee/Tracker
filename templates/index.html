@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+    <head>
+	<script type="text/javascript" src="http://localhost/~matthew/jquery-ui/jquery-1.7.1.js"></script>          
+	<script type="text/javascript">
+		 $(document).ready(function() {
+   			$("#click_1").click(function() {
+				$.ajax({
+  					url: 'http://127.0.0.1:8000/track?campaign=campaign_1',
+  					success: function(data) {
+    					$('.result').html(data);
+    					alert('Load was performed.');
+  					}
+				});
+   			});
+ 		});
+
+	</script>
+        <title>PAGE TITLE</title>
+        <!-- Some CSS and some javascript -->
+    </head>
+    <body>
+       
+		<li><a id="click_1" href='#'>Click Me To Track Campaign 1</a>
+		<li><a href='track?campaign=campaign_2'>Click Me To Track Campaign 2</a>
+		<li><a href='track?campaign=campaign_3'>Click Me To Track Campaign 3</a>
+
+	<div id="results"></div>
+
+
+    </body>
+</html>
